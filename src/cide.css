@@ -1,0 +1,268 @@
+:root {
+	--color-primary: #212121;
+	--color-secondary: #161616;
+	--color-font-focus: #ffffff;
+	--color-font-disabled: #999999;
+	--color-font-primary: #cdcdcd;
+	--color-font-secondary: #bbb;
+}
+
+@font-face {
+	font-family: Cousine;
+	src: url("font/Cousine-Regular.ttf");
+}
+
+@font-face {
+	font-family: Cousine;
+	src: url("font/Cousine-Bold.ttf");
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: Cousine;
+	src: url("font/Cousine-Italic.ttf");
+	font-style: italic;
+}
+
+@font-face {
+	font-family: OpenSans;
+	src: url("font/OpenSans-Regular.ttf");
+}
+
+@font-face {
+	font-family: OpenSans;
+	src: url("font/OpenSans-Bold.ttf");
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: OpenSans;
+	src: url("font/OpenSans-Italic.ttf");
+	font-style: italic;
+}
+
+@font-face {
+	font-family: OpenSans;
+	src: url("font/OpenSans-BoldItalic.ttf");
+	font-style: oblique;
+}
+
+html, body {
+	width: 100vw;
+	height: 100vh;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	font-family: OpenSans, sans-serif;
+	font-size: 1em;
+	background: var(--color-primary);
+	color: var(--color-font-primary);
+	-webkit-user-select: none;
+}
+
+body {
+	display: flex;
+}
+
+textarea, code {
+	font-family: Cousine, monospace !important;
+}
+
+a {
+	color: var(--color-font-secondary);
+	transition: color 0.1s;
+	cursor: pointer;
+}
+
+a:hover {
+	color: var(--color-font-focus);
+}
+
+.hidden {
+	display: none !important;
+}
+
+.filelist {
+	padding: 0 2vw;
+	font-size: 1em;
+}
+
+.filelist * {
+	color: var(--color-font-primary);
+	transition: color 0.1s;
+	display: -webkit-box;
+	-webkit-box-align: center;
+	cursor: pointer;
+}
+
+.filelist *[disabled] {
+	color: var(--color-font-disabled) !important;
+	cursor: not-allowed;
+}
+
+.filelist *:hover {
+	color: var(--color-font-focus);
+}
+
+.filelist:not(.no-icons) *::before {
+	content: "";
+	height: 1em;
+	width: 1em;
+	margin-right: 3px;
+	background: currentColor;
+	-webkit-mask: url("img/files/generic.svg") center / cover;
+			mask: url("img/files/generic.svg") center / cover;
+	display: block;
+}
+
+.filelist:not(.no-icons) *.folder::before { -webkit-mask: url("img/files/folder.svg") center / cover; }
+.filelist:not(.no-icons) *.file-extension-clipp::before { -webkit-mask: url("img/files/lang.clipp.svg") center / cover; background: #19b873; }
+
+.filelist-header {
+	padding: 1vh 1vw;
+	color: var(--color-font-primary);
+	font-size: 0.9em;
+	transition: color 0.1s;
+	cursor: pointer;
+}
+
+.filelist-header:hover {
+	color: var(--color-font-focus);
+}
+
+.button-small {
+	height: 1.5em;
+	padding: 0 0.4em;
+	font-size: 0.8em;
+	background-color: rgba(255, 255, 255, 0);
+	display: block;
+	cursor: default;
+	transition: background-color 0.1s;
+}
+
+.button-small:hover {
+	background-color: rgba(255, 255, 255, 0.2);
+}
+
+.modal {
+	position: absolute;
+}
+
+.modal > *:first-child {
+	margin: 10vh 10vw;
+	flex: 1;
+}
+
+.modal > *:first-child::before {
+	content: "";
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.6);
+	top: 0;
+	left: 0;
+	z-index: -100;
+	position: absolute;
+	display: block;
+}
+
+.wrapper {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+.wrapper > .content {
+	flex: 1;
+	display: flex;
+}
+
+.wrapper > .content > .container {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+.wrapper > .content > .container > .editor {
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	display: flex;
+}
+
+.wrapper > .content > .sidebar {
+	padding-right: 4px;
+	background: var(--color-secondary);
+	display: flex;
+	cursor: e-resize;
+}
+
+.sidebar > .content {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	cursor: default;
+}
+
+.sidebar > .content > .filelist {
+	flex: 1;
+}
+
+.wrapper > .titlebar {
+	height: 48px;
+	background: var(--color-secondary);
+	display: flex;
+	flex-direction: column;
+}
+
+.titlebar > .content {
+	height: 23px;
+	margin: 4px;
+	margin-bottom: 0;
+	display: flex;
+}
+
+.titlebar > .content > div:first-child { margin-left: 3px; }
+.titlebar > .content > div:last-child { margin-right: 3px; }
+
+.titlebar > .content > .text {
+	height: 23px;
+	flex: 1;
+	display: -webkit-box;
+	-webkit-box-align: center;
+	-webkit-app-region: drag;
+}
+
+.titlebar > .content > .text::before {
+	content: "";
+	height: 20px;
+	width: 20px;
+	margin-right: 3px;
+	background: url("img/icon-32.png") center / cover;
+	display: block;
+}
+
+.titlebar > .content > .button {
+	width: 23px;
+	height: 23px;
+	background-color: rgba(255, 255, 255, 0);
+	transition: background-color 0.1s;
+}
+
+.titlebar > .content > .button-maximize { background: url("img/action-maximize-64.png") center / cover; }
+.titlebar > .content > .button-maximized { background: url("img/action-maximized-64.png") center / cover; }
+.titlebar > .content > .button-minimize { background: url("img/action-minimize-64.png") center / cover; }
+.titlebar > .content > .button-close { background: url("img/action-close-64.png") center / cover; }
+
+.titlebar > .content > .button:hover { background-color: rgba(255, 255, 255, 0.2); }
+.titlebar > .content > .button-danger:hover { background-color: rgba(255, 0, 0, 0.2); }
+
+.titlebar > .menu {
+	height: 20px;
+	margin-bottom: 1px;
+	color: var(--color-font-secondary);
+}
+
+.titlebar > .menu > .menu-item {
+	height: 20px !important;
+	display: inline-block;
+}
