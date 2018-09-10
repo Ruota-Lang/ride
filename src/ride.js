@@ -84,13 +84,13 @@ function updateEditor() {
 	components.editor.innerHTML = "";
 
 	switch (protocol) {
-		case "cide": {
+		case "ride": {
 			switch (location) {
 				case "Welcome": {
 					components.editor.innerHTML = `
 						<div style="padding: 10vh 10vw; flex: 1; display: flex; flex-direction: column;">
 							<div style="font-size: 3em; font-weight: bold; color: var(--color-font-primary);">Welcome!</div>
-							<div style="font-size: 0.8em; color: var(--color-font-secondary);">CIDE, Clink++ Integrated Development Enviroment</div>
+							<div style="font-size: 0.8em; color: var(--color-font-secondary);">Ruota Integrated Development Enviroment, Ruota IDE</div>
 							<div class="filelist no-icons">
 								<div onclick="showDialog(dialogs.newApp.console())">New Console App...</div>
 								<div disabled>New Forms App...</div>
@@ -225,7 +225,7 @@ function openProject(p = undefined) {
 	function open(path) {
 		if (fs.existsSync(path)) {
 			editor.workspaceDir = path;
-			editor.open = "cide:blank";
+			editor.open = "ride:blank";
 			updateWorkspace();
 		} else {
 			console.error("oh no the thing doesn't do\nyou should really tell the user that it didn't\nmaybe in the form of a dialog\n\n...just a thought...");

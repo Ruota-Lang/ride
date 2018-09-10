@@ -1,7 +1,7 @@
 {
-  "name": "clinkplusplus-ide",
+  "name": "ride",
   "version": "1.0.0",
-  "description": "An IDE for the language that makes you cry, it happens.",
+  "description": "Ruota Integrated Development Enviroment, Ruota IDE.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MininMobile/clinkplusplus-ide.git"
+    "url": "git+https://github.com/Ruota-Lang/ride"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/MininMobile/clinkplusplus-ide/issues"
+    "url": "https://github.com/Ruota-Lang/ride/issues"
   },
-  "homepage": "https://github.com/MininMobile/clinkplusplus-ide#readme",
+  "homepage": "https://github.com/Ruota-Lang/ride#readme",
   "dependencies": {
     "electron": "^2.0.8"
   }

@@ -3,8 +3,8 @@ const EventEmitter = require("events");
 const AppEmitter = new class extends EventEmitter {}();
 
 module.exports = exports = {
-	name: "CIDE",
-	repo: "github.com/MininMobile/clinkplusplus-ide",
+	name: "RIDE",
+	repo: "github.com/Ruota-Lang/ride",
 	on: AppEmitter.on,
 	emit: AppEmitter.emit
 };

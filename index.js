@@ -10,7 +10,7 @@ function createWindow() {
 		minWidth: 800,
 		minHeight: 600,
 		resizable: true,
-		title: "CIDE",
+		title: "RIDE",
 		backgroundColor: "#161616",
 		frame: false
 	});

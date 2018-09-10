@@ -1,2 +1,2 @@
-# clinkplusplus-ide
-An IDE for the language that makes you cry, it happens.
+# ride
+Ruota Integrated Development Enviroment, Ruota IDE.
