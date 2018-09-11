@@ -88,7 +88,7 @@ a:hover {
 }
 
 .filelist * {
-	color: var(--color-font-primary);
+	color: var(--color-font-secondary);
 	transition: color 0.1s;
 	display: -webkit-box;
 	-webkit-box-align: center;
@@ -109,14 +109,12 @@ a:hover {
 	height: 1em;
 	width: 1em;
 	margin-right: 3px;
-	background: currentColor;
-	-webkit-mask: url("img/files/generic.svg") center / cover;
-			mask: url("img/files/generic.svg") center / cover;
+	background: url("img/files/generic.svg") center / cover;
 	display: block;
 }
 
-.filelist:not(.no-icons) *.folder::before { -webkit-mask: url("img/files/folder.svg") center / cover; }
-.filelist:not(.no-icons) *.file-extension-ruo::before { -webkit-mask: url("img/files/lang.ruo.svg") center / cover; background: #19b873; }
+.filelist:not(.no-icons) *.folder::before { background: url("img/files/folder.svg") center / cover; }
+.filelist:not(.no-icons) *.file-extension-ruo::before { background: url("img/files/lang.ruo.svg") center / cover; }
 
 .filelist-header {
 	padding: 1vh 1vw;
@@ -237,7 +235,7 @@ a:hover {
 	height: 20px;
 	width: 20px;
 	margin-right: 3px;
-	background: url("img/icon-32.png") center / cover;
+	background: url("img/icon-svg.svg") center / cover;
 	display: block;
 }
 
