@@ -27,13 +27,17 @@ const dialogs = {
 
 const menus = {
 	"File": {
-		"New File": undefined,
-		"Save": undefined,
-		"Save As": undefined,
-		"Open File": undefined,
-		"Open Project": undefined,
-		"Open Recent": undefined,
-		"Import": undefined
+		"New File": undefined,		// new file
+		"New": undefined,			// list of new items
+		"divider0": "-",				//
+		"Save": undefined,			// save (but autosave tho)
+		"Save As": undefined,		// save as a different file
+		"divider1": "-",				//
+		"Open File": undefined,		// open a file
+		"Open Project": undefined,	// open a folder
+		"Open Recent": undefined,	// open a recent file or project
+		"divider2": "-",				//
+		"Import": undefined			// copy file from another project
 	},
 	"Edit": {
 		"Cut": undefined,	// cut to clipboard
@@ -43,10 +47,12 @@ const menus = {
 	"View": {
 		"Side Bar": undefined,		// toggle sidebar
 		"Status Bar": undefined,	// toggle status bar
+		"divider0": "-",			//
 		"Editor": undefined			// toggle main editor (why did I think)
 	},
 	"Tools": {
-		"Refresh": () => window.location.reload(),				// refresh window
+		"Refresh": () => window.location.reload(),					// refresh window
+		"divider0": "-",											//
 		"Extensions": () => showDialog(dialogs.extensionManager)	// open extensions dialog
 	},
 	"Help": {
@@ -207,9 +213,14 @@ function spawnContext(menu, e) {
 
 	Object.keys(menu).forEach((item) => {
 		let button = document.createElement("div");
-		button.classList.add("context-item");
-		button.innerText = item;
-		button.onclick = typeof menu[item] == "object" ? undefined /* open child submenu */ : menu[item];
+		
+		if (menu[item] == "-") {
+			button.classList.add("divider");
+		} else {
+			button.classList.add("context-item");
+			button.innerText = item;
+			button.onclick = typeof menu[item] == "object" ? undefined /* open child submenu */ : menu[item];
+		}
 
 		components.contextContainer.appendChild(button);
 	});

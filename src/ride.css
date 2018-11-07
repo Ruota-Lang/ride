@@ -5,6 +5,7 @@
 	--color-font-disabled: #999999;
 	--color-font-primary: #cdcdcd;
 	--color-font-secondary: #bbb;
+	--color-font-divider: #777777;
 }
 
 @font-face {
@@ -145,6 +146,26 @@ a:hover {
 .context {
 	position: absolute;
 	z-index: 1000;
+	min-width: 8em;
+	padding: 0.5em 0;
+	background: #1a1a1a;
+	color: var(--color-font-primary);
+}
+
+.context > .context-item {
+	padding: 0.2em 0.8em;
+	padding-right: 2.7em;
+	transition: background 0.2s;
+}
+
+.context > .context-item:hover {
+	background: rgba(255, 255, 255, 0.1);
+}
+
+.context > .divider {
+	height: 1px;
+	margin: 0.25em 0.5em;
+	background: var(--color-font-divider);
 }
 
 .modal {
