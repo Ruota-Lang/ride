@@ -12,6 +12,7 @@ const components = {
 	sidebar: document.getElementById("sidebar-content"),
 	editor: document.getElementById("editor"),
 	panel: document.getElementById("panel"),
+	contextContainer: document.getElementById("context"),
 	dialogContainer: document.getElementById("dialog"),
 	minimizeApp: document.getElementById("action-minimize"),
 	maximizeApp: document.getElementById("action-maximize"),
@@ -201,8 +202,20 @@ function generateFilelist(p) {
 	return `${folders}\n${files}`;
 }
 
-function spawnContext(menu) {
-	// a
+function spawnContext(menu, e) {
+	components.contextContainer.innerHTML = "";
+
+	Object.keys(menu).forEach((item) => {
+		let button = document.createElement("div");
+		button.classList.add("context-item");
+		button.innerText = item;
+		button.onclick = typeof menu[item] == "object" ? undefined /* open child submenu */ : menu[item];
+
+		components.contextContainer.appendChild(button);
+	});
+
+	components.contextContainer.style.left = `${e.clientX}px`;
+	components.contextContainer.style.top = `${e.clientY}px`;
 }
 
 function generateMenu(menu) {
@@ -212,7 +225,7 @@ function generateMenu(menu) {
 		let button = document.createElement("div");
 		button.classList.add("menu-item", "button-small");
 		button.innerText = item;
-		button.onclick = typeof menu[item] == "object" ? undefined : menu[item];
+		button.addEventListener("click", (e) => spawnContext(menu[item], e));
 
 		components.altmenu.appendChild(button);
 	});
