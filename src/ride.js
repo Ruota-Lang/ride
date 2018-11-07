@@ -16,11 +16,40 @@ const components = {
 	minimizeApp: document.getElementById("action-minimize"),
 	maximizeApp: document.getElementById("action-maximize"),
 	closeApp: document.getElementById("action-close")
-};
+}
 
 const dialogs = {
 	newApp: {
 		console() { /* placeholder function */ }
+	}
+}
+
+const menus = {
+	"File": {
+		"New File": undefined,
+		"Save": undefined,
+		"Save As": undefined,
+		"Open File": undefined,
+		"Open Project": undefined,
+		"Open Recent": undefined,
+		"Import": undefined
+	},
+	"Edit": {
+		"Cut": undefined,	// cut to clipboard
+		"Copy": undefined,	// copy to clipboard
+		"Paste": undefined	// paste from clipboard
+	},
+	"View": {
+		"Side Bar": undefined,		// toggle sidebar
+		"Status Bar": undefined,	// toggle status bar
+		"Editor": undefined			// toggle main editor (why did I think)
+	},
+	"Tools": {
+		//"Refresh": window.location.reload(),				// refresh window
+		"Extensions": showDialog(dialogs.extensionManager) 	// open extensions dialog
+	},
+	"Help": {
+		"About": showDialog(application.dialogs.about)	// about application
 	}
 }
 
@@ -57,17 +86,12 @@ function setTitle(title) {
 
 function updateWorkspace() {
 	editor.workspaceName = editor.workspaceDir != "" ? editor.workspaceDir.split("\\")[editor.workspaceDir.split("\\").length - 1] : editor.workspaceName;
+
 	updateSidebar();
 	updateEditor();
 	updateDialog();
 	
-	generateMenu({
-		File: spawnContext,
-		Edit: spawnContext,
-		View: spawnContext,
-		Tools: spawnContext,
-		Help: spawnContext,
-	});
+	generateMenu(menus);
 
 	setTitle(editor.workspaceName);
 }
@@ -166,6 +190,7 @@ function generateFilelist(p) {
 		let stats = fs.statSync(path + f);
 		if (stats.isFile()) {
 			let extension = f.split(".")[f.split(".").length - 1]; if (extension.includes(" ")) extension = "";
+
 			files += `<div onclick='editor.open = "file:${path.replace(/\\/g, "\\\\")}${f}"; updateEditor()'`;
 			files += ` class="${extension == "" ? "" : "file-extension-" + extension}"`;
 			files += `>${f}</div>`;
@@ -177,7 +202,7 @@ function generateFilelist(p) {
 }
 
 function spawnContext(menu) {
-	// spawn context menu at cursor position
+	// a
 }
 
 function generateMenu(menu) {
@@ -187,7 +212,7 @@ function generateMenu(menu) {
 		let button = document.createElement("div");
 		button.classList.add("menu-item", "button-small");
 		button.innerText = item;
-		button.onclick = menu[item];
+		button.onclick = typeof menu[item] == "object" ? undefined : menu[item];
 
 		components.altmenu.appendChild(button);
 	});
