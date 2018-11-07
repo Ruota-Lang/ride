@@ -158,7 +158,7 @@ function updateDialog() {
 }
 
 function generateFilelist(p) {
-	const path = p.endsWith("\\") ? p : p + "\\";
+	const path = process.platform == "win32" ? p.endsWith("\\") ? p : p + "\\" : p.endsWith("/") ? p : p + "/";
 	let files = "";
 	let folders = "";
 
