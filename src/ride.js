@@ -45,11 +45,11 @@ const menus = {
 		"Editor": undefined			// toggle main editor (why did I think)
 	},
 	"Tools": {
-		//"Refresh": window.location.reload(),				// refresh window
-		"Extensions": showDialog(dialogs.extensionManager) 	// open extensions dialog
+		"Refresh": () => window.location.reload(),				// refresh window
+		"Extensions": () => showDialog(dialogs.extensionManager)	// open extensions dialog
 	},
 	"Help": {
-		"About": showDialog(application.dialogs.about)	// about application
+		"About": () => showDialog(application.dialogs.about)	// about application
 	}
 }
 
