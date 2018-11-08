@@ -21,8 +21,10 @@ const components = {
 
 const dialogs = {
 	newApp: {
-		console() { /* placeholder function */ }
-	}
+		console() { return "<div></div>" }, // placeholder
+		forms() { return "<div></div>" } // placeholder
+	},
+	extensions() { return "<div></div>" } // placeholder
 }
 
 const menus = {
@@ -53,7 +55,7 @@ const menus = {
 	"Tools": {
 		"Refresh": () => window.location.reload(),					// refresh window
 		"divider0": "-",											//
-		"Extensions": () => showDialog(dialogs.extensionManager)	// open extensions dialog
+		"Extensions": () => showDialog(dialogs.extensions())	// open extensions dialog
 	},
 	"Help": {
 		"About": () => showDialog(application.dialogs.about)	// about application
@@ -73,7 +75,12 @@ let saveTimeout;
 
 	application.on("load", () => {
 		{ // shortcuts
-			// [GET SHORTCUT CONFIG AND ASSIGN ACTIONS]
+			{ // set context menu actions
+				document.addEventListener("mouseup", () => {
+					components.contextContainer.innerHTML = "";
+					updateContext();
+				});
+			}
 		}
 
 		{ // action buttons
@@ -96,8 +103,8 @@ function updateWorkspace() {
 
 	updateSidebar();
 	updateEditor();
-	updateDialog();
-	
+	updateContext();
+
 	generateMenu(menus);
 
 	setTitle(editor.workspaceName);
@@ -172,20 +179,11 @@ function updateEditor() {
 
 function showDialog(dialog) {
 	if (dialog != "") components.dialogContainer.innerHTML = dialog;
-	updateDialog();
+	components.dialogContainer.classList.remove("hidden");
 }
 
 function hideDialog() {
-	components.dialogContainer.innerHTML = "";
-	updateDialog();
-}
-
-function updateDialog() {
-	if (components.dialogContainer.innerHTML == "") {
-		components.dialogContainer.classList.add("hidden");
-	} else {
-		components.dialogContainer.classList.remove("hidden");
-	}
+	components.dialogContainer.classList.add("hidden");
 }
 
 function generateFilelist(p) {
@@ -208,6 +206,10 @@ function generateFilelist(p) {
 	return `${folders}\n${files}`;
 }
 
+function updateContext() {
+	components.contextContainer.innerHTML !== "" ? components.contextContainer.classList.remove("hidden") : components.contextContainer.classList.add("hidden");
+}
+
 function spawnContext(menu, e) {
 	components.contextContainer.innerHTML = "";
 
@@ -219,7 +221,7 @@ function spawnContext(menu, e) {
 		} else {
 			button.classList.add("context-item");
 			button.innerText = item;
-			button.onclick = typeof menu[item] == "object" ? undefined /* open child submenu */ : menu[item];
+			button.onmouseup = typeof menu[item] == "object" ? undefined /* open child submenu */ : menu[item];
 		}
 
 		components.contextContainer.appendChild(button);
@@ -227,6 +229,8 @@ function spawnContext(menu, e) {
 
 	components.contextContainer.style.left = `${e.clientX}px`;
 	components.contextContainer.style.top = `${e.clientY}px`;
+
+	updateContext();
 }
 
 function generateMenu(menu) {
