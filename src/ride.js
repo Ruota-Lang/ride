@@ -128,7 +128,7 @@ function updateEditor() {
 					components.editor.innerHTML = `
 						<div style="padding: 10vh 10vw; flex: 1; display: flex; flex-direction: column;">
 							<div style="font-size: 3em; font-weight: bold; color: var(--color-font-primary);">Welcome!</div>
-							<div style="font-size: 0.8em; color: var(--color-font-secondary);">Ruota Integrated Development Enviroment, Ruota IDE</div>
+							<div style="padding-bottom: 0.6em; font-size: 0.8em; color: var(--color-font-secondary);">Ruota Integrated Development Enviroment, Ruota IDE</div>
 							<div class="filelist no-icons">
 								<div onclick="showDialog(dialogs.newApp.console())">New Console App...</div>
 								<div disabled>New Forms App...</div>
@@ -139,7 +139,27 @@ function updateEditor() {
 				} break;
 
 				case "blank": {
-					components.editor.innerHTML = ``;
+					components.editor.innerHTML = `
+						<div style="color: var(--color-font-secondary); font-size: 0.8em; display: flex; flex-direction: column; flex: 1;">
+							<div style="display: flex; align-items: flex-end; justify-content: center; flex: 1;"><div class="logo"></div></div>
+							<div style="height: 0.6em;"></div>
+							<div style="display: flex; flex: 1;">
+								<div style="display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-start; flex: 1;">
+									<div>Open File</div>
+									<div>Open Project</div>
+									<div>Open Recent</div>
+									<div>Toggle Terminal</div>
+								</div>
+								<div style="width: 0.6em;"></div>
+								<div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; flex: 1;">
+									<div>Ctrl+O</div>
+									<div>Ctrl+Shift+O</div>
+									<div>Ctrl+Alt+O</div>
+									<div>Ctrl+\`</div>
+								</div>
+							</div>
+						</div>
+					`;
 				} break;
 
 				default: {
@@ -155,8 +175,8 @@ function updateEditor() {
 			content.value = fs.readFileSync(location, "utf-8");
 
 			content.style.background = "var(--color-primary)";
-			content.style.color = "var(--color-font-primary)";
 			content.style.margin = "0.5em";
+			content.style.color = "var(--color-font-primary)";
 			content.style.flex = "1";
 			content.style.border = "none";
 			content.style.outline = "none";
@@ -184,26 +204,6 @@ function showDialog(dialog) {
 
 function hideDialog() {
 	components.dialogContainer.classList.add("hidden");
-}
-
-function generateFilelist(p) {
-	const path = process.platform == "win32" ? p.endsWith("\\") ? p : p + "\\" : p.endsWith("/") ? p : p + "/";
-	let files = "";
-	let folders = "";
-
-	fs.readdirSync(path).forEach((f) => {
-		let stats = fs.statSync(path + f);
-		if (stats.isFile()) {
-			let extension = f.split(".")[f.split(".").length - 1]; if (extension.includes(" ")) extension = "";
-
-			files += `<div onclick='editor.open = "file:${path.replace(/\\/g, "\\\\")}${f}"; updateEditor()'`;
-			files += ` class="${extension == "" ? "" : "file-extension-" + extension}"`;
-			files += `>${f}</div>`;
-		} else
-			folders += `<div class="folder">${f}</div>`;
-	});
-
-	return `${folders}\n${files}`;
 }
 
 function updateContext() {
@@ -244,6 +244,26 @@ function generateMenu(menu) {
 
 		components.altmenu.appendChild(button);
 	});
+}
+
+function generateFilelist(p) {
+	const path = process.platform == "win32" ? p.endsWith("\\") ? p : p + "\\" : p.endsWith("/") ? p : p + "/";
+	let files = "";
+	let folders = "";
+
+	fs.readdirSync(path).forEach((f) => {
+		let stats = fs.statSync(path + f);
+		if (stats.isFile()) {
+			let extension = f.split(".")[f.split(".").length - 1]; if (extension.includes(" ")) extension = "";
+
+			files += `<div onclick='editor.open = "file:${path.replace(/\\/g, "\\\\")}${f}"; updateEditor()'`;
+			files += ` class="${extension == "" ? "" : "file-extension-" + extension}"`;
+			files += `>${f}</div>`;
+		} else
+			folders += `<div class="folder">${f}</div>`;
+	});
+
+	return `${folders}\n${files}`;
 }
 
 function toggleMaximize() {
