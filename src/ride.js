@@ -21,10 +21,10 @@ const components = {
 
 const dialogs = {
 	newApp: {
-		console() { return "<div></div>" }, // placeholder
-		forms() { return "<div></div>" } // placeholder
+		console() { return document.createElement("div") }, // placeholder
+		forms() { return document.createElement("div") } // placeholder
 	},
-	extensions() { return "<div></div>" } // placeholder
+	extensions() { return document.createElement("div") } // placeholder
 }
 
 const menus = {
@@ -79,6 +79,18 @@ let saveTimeout;
 				document.addEventListener("mouseup", () => {
 					components.contextContainer.innerHTML = "";
 					updateContext();
+				});
+			}
+
+			{ // dialogs
+				document.addEventListener("keyup", (e) => {
+					if (!components.dialogContainer.classList.contains("hidden")) {
+						switch (e.key.toLowerCase()) {
+							case "escape": {
+								hideDialog();
+							} break;
+						}
+					return }
 				});
 			}
 		}
@@ -141,7 +153,7 @@ function updateEditor() {
 				case "blank": {
 					components.editor.innerHTML = `
 						<div style="color: var(--color-font-secondary); font-size: 0.8em; display: flex; flex-direction: column; flex: 1;">
-							<div style="display: flex; align-items: flex-end; justify-content: center; flex: 1;"><div class="logo"></div></div>
+							<div style="display: flex; align-items: flex-end; justify-content: center; flex: 1document.createElement("div")"></div></div>
 							<div style="height: 0.6em;"></div>
 							<div style="display: flex; flex: 1;">
 								<div style="display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-start; flex: 1;">
@@ -198,7 +210,14 @@ function updateEditor() {
 }
 
 function showDialog(dialog) {
-	if (dialog != "") components.dialogContainer.innerHTML = dialog;
+	if (dialog != "") {
+		if (typeof dialog == "string") {
+			components.dialogContainer.innerHTML = dialog
+		} else {
+			components.dialogContainer.innerHTML = "";
+			components.dialogContainer.appendChild(dialog);
+		}
+	}
 	components.dialogContainer.classList.remove("hidden");
 }
 
