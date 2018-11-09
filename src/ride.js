@@ -7,7 +7,8 @@ const editor = require("./lib/editor");
 const components = {
 	title: document.getElementById("title"),
 	altmenu: document.getElementById("altmenu"),
-	sidebarHandle: document.getElementById("sidebar"),
+	sidebarContainer: document.getElementById("sidebar"),
+	sidebarHandle: document.getElementById("sidebar-handle"),
 	sidebarTitle: document.getElementById("sidebar-workspace"),
 	sidebar: document.getElementById("sidebar-content"),
 	editor: document.getElementById("editor"),
@@ -31,14 +32,14 @@ const menus = {
 	"File": {
 		"New File": undefined,		// new file
 		"New": undefined,			// list of new items
-		"divider0": "-",				//
+		"divider0": "-",			//
 		"Save": undefined,			// save (but autosave tho)
 		"Save As": undefined,		// save as a different file
-		"divider1": "-",				//
+		"divider1": "-",			//
 		"Open File": undefined,		// open a file
 		"Open Project": undefined,	// open a folder
 		"Open Recent": undefined,	// open a recent file or project
-		"divider2": "-",				//
+		"divider2": "-",			//
 		"Import": undefined			// copy file from another project
 	},
 	"Edit": {
@@ -53,8 +54,8 @@ const menus = {
 		"Editor": undefined			// toggle main editor (why did I think)
 	},
 	"Tools": {
-		"Refresh": () => window.location.reload(),					// refresh window
-		"divider0": "-",											//
+		"Refresh": () => window.location.reload(),				// refresh window
+		"divider0": "-",										//
 		"Extensions": () => showDialog(dialogs.extensions())	// open extensions dialog
 	},
 	"Help": {
@@ -62,6 +63,7 @@ const menus = {
 	}
 }
 
+let sidebarResizing = false;
 let saveTimeout;
 
 { // create event handlers
@@ -76,14 +78,29 @@ let saveTimeout;
 	application.on("load", () => {
 		{ // shortcuts
 			{ // set context menu actions
-				document.addEventListener("mouseup", () => {
-					components.contextContainer.innerHTML = "";
-					updateContext();
-				});
+				document.addEventListener("mouseup",  () => components.contextContainer.classList.add("hidden"));
 			}
 
-			{ // dialogs
+			{ // keyboard shortcuts
 				document.addEventListener("keyup", (e) => {
+					// context menus
+					if (!components.contextContainer.classList.contains("hidden")) {
+						switch (e.key.toLowerCase()) {
+							case "escape": {
+								hideContext();
+							} break;
+
+							case "arrowup": {
+								console.log("context menu up");
+							} break;
+
+							case "arrowdown": {
+								console.log("context menu down");
+							} break;
+						}
+					return }
+					
+					// dialogs
 					if (!components.dialogContainer.classList.contains("hidden")) {
 						switch (e.key.toLowerCase()) {
 							case "escape": {
@@ -93,6 +110,18 @@ let saveTimeout;
 					return }
 				});
 			}
+		}
+
+		{ // sidebar
+			let handle = components.sidebarHandle;
+
+			handle.addEventListener("mousedown", () => sidebarResizing = true);
+
+			document.addEventListener("mousemove", (e) => {
+				if (sidebarResizing) components.sidebarContainer.style.width = e.clientX + "px";
+			});
+
+			document.addEventListener("mouseup", () => sidebarResizing = false);
 		}
 
 		{ // action buttons
@@ -106,8 +135,8 @@ let saveTimeout;
 }
 
 function setTitle(title) {
-	document.title = `${title} - ${application.name}`;
-	components.title.innerText = `${title} - ${application.name}`;
+	document.title = `${title} - ${application.info.name}`;
+	components.title.innerText = `${title} - ${application.info.name}`;
 }
 
 function updateWorkspace() {
@@ -115,7 +144,6 @@ function updateWorkspace() {
 
 	updateSidebar();
 	updateEditor();
-	updateContext();
 
 	generateMenu(menus);
 
@@ -225,11 +253,7 @@ function hideDialog() {
 	components.dialogContainer.classList.add("hidden");
 }
 
-function updateContext() {
-	components.contextContainer.innerHTML !== "" ? components.contextContainer.classList.remove("hidden") : components.contextContainer.classList.add("hidden");
-}
-
-function spawnContext(menu, e) {
+function spawnContext(menu, x, y) {
 	components.contextContainer.innerHTML = "";
 
 	Object.keys(menu).forEach((item) => {
@@ -246,22 +270,24 @@ function spawnContext(menu, e) {
 		components.contextContainer.appendChild(button);
 	});
 
-	components.contextContainer.style.left = `${e.clientX}px`;
-	components.contextContainer.style.top = `${e.clientY}px`;
+	components.contextContainer.style.left = `${x}px`;
+	components.contextContainer.style.top = `${y}px`;
 
-	updateContext();
+	components.contextContainer.classList.remove("hidden");
+}
+
+function hideContext() {
+	components.contextContainer.classList.add("hidden");
 }
 
 function generateMenu(menu) {
 	components.altmenu.innerHTML = "";
 
 	Object.keys(menu).forEach((item) => {
-		let button = document.createElement("div");
+		let button = document.createElement("div"); components.altmenu.appendChild(button);
 		button.classList.add("menu-item", "button-small");
 		button.innerText = item;
-		button.addEventListener("click", (e) => spawnContext(menu[item], e));
-
-		components.altmenu.appendChild(button);
+		button.addEventListener("click", (e) => spawnContext(menu[item], button.offsetLeft, button.offsetTop + button.clientHeight));
 	});
 }
 
@@ -340,7 +366,7 @@ function utilERRORTEMPLATE(code = "404", details = "Missing File") {
 		<div style="padding: 10vh 10vw; flex: 1; display: flex; flex-direction: column;">
 			<div style="font-size: 3em; font-weight: bold; color: #f44336;">error ${code}</div>
 			<div style="font-size: 1em; color: var(--color-font-primary);">${details.toLowerCase()}</div>
-			<div style="font-size: 0.8em; color: var(--color-font-secondary);">if you do not know how this error occured, ask on the <a href="https://${application.repo}/issues">GitHub issues page</a>.</div>
+			<div style="font-size: 0.8em; color: var(--color-font-secondary);">if you do not know how this error occured, ask on the <a href="https://${application.info.repo}/issues">GitHub issues page</a>.</div>
 		</div>
 	`;
 }

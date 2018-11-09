@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Ruota-Lang/ride#readme",
   "dependencies": {
-    "electron": "^2.0.8"
+    "electron": "^2.0.8",
+    "electron-json-storage": "^4.1.4"
   }
 }
