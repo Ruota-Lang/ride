@@ -211,12 +211,13 @@ function updateEditor() {
 		case "file": {
 			components.editor.innerHTML = "";
 
-			let content = document.createElement("textarea");
+			let extension = location.split(".")[location.split(".").length - 1]; if (extension.includes(" ")) extension = "";
+
+			let content = document.createElement("textarea"); components.editor.appendChild(content);
 			content.value = fs.readFileSync(location, "utf-8");
 
-			content.style.background = "var(--color-primary)";
-			content.style.margin = "0.5em";
-			content.style.color = "var(--color-font-primary)";
+			let decorator = new TextareaDecorator(content, utilGETPARSER(extension));
+
 			content.style.flex = "1";
 			content.style.border = "none";
 			content.style.outline = "none";
@@ -227,8 +228,6 @@ function updateEditor() {
 					fs.writeFile(location, content.value, (e) => { if (e) editor.emit("error", "While Running Auto-Save", e) })
 				, 500);
 			}
-
-			components.editor.appendChild(content);
 		} break;
 
 		default: {
@@ -349,6 +348,14 @@ function openProject(p = undefined) {
 			console.error("oh no the thing doesn't do\nyou should really tell the user that it didn't\nmaybe in the form of a dialog\n\n...just a thought...");
 		}
 	}
+}
+
+function utilGETPARSER(ext) {
+	let extension = ext;
+
+	if (!Object.keys(editor.parsers).includes(extension)) extension = "txt";
+
+	return new Parser(editor.parsers[extension]);
 }
 
 function utilDIALOGTEMPLATE(body) {

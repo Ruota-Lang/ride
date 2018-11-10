@@ -8,6 +8,15 @@
 	--color-font-divider: #777777;
 }
 
+/* highlight styles */
+.ldt .comment	{ color: silver; }
+.ldt .string	{ color: green; }
+.ldt .number	{ color: navy; }
+.ldt .variable	{ color: cyan; }
+.ldt .define	{ color: blue; }
+/* setting inline-block and margin to avoid misalignment bug in windows */
+.ldt .keyword	{ color: red; font-weight: bold; display: inline-block; margin-bottom: -1px; }
+
 @font-face {
 	font-family: Cousine;
 	src: url("font/Cousine-Regular.ttf");
